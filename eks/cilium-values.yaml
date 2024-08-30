@@ -1,0 +1,45 @@
+# Reference 1: https://artifacthub.io/packages/helm/cilium/cilium/
+# Reference 2: https://docs.cilium.io/en/stable/helm-reference/
+
+ipam:
+  mode: eni
+eni:
+  enabled: true
+  awsReleaseExcessIPs: true
+  awsEnablePrefixDelegation: true
+
+routingMode: native
+
+envoy:
+  enabled: false
+
+egressMasqueradeInterfaces: ens5
+
+#envoyConfig:
+#  enabled: true
+
+#gatewayAPI:
+#  enabled: true
+
+#loadBalancer:
+#  algorithm: maglev
+#  acceleration: best-effort # XDP, but need to manually set parameters in node's system.
+#  mode: hybrid # DSR, but need to disable EC2 src/dst check https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/using-eni.html#modify-source-dest-check https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#direct-server-return-dsr
+#  # TODO: uncomment the above "mode: hybrid" after EC2 src/dst check is disabled.
+
+#kubeProxyReplacement: true
+#k8sServiceHost: # set individually in terraform helm_release
+k8sServicePort: 443
+socketLB:
+  hostNamespaceOnly: true # for istio https://docs.cilium.io/en/stable/network/servicemesh/istio/
+
+# Tuning: https://docs.cilium.io/en/stable/operations/performance/tuning/
+#egressMasqueradeInterfaces: eth0 # conflict with bpf.masquerade
+#bpf:
+#  masquerade: true
+
+#  datapathMode: netkit  # Kernel >= 6.8
+#bandwidthManager:
+#  enabled: true
+#  bbr: true
+
